@@ -47,7 +47,7 @@ public void user_will_see_signup_page() {
 @When("User give Signup Username and Password")
 public void user_give_username_and_password() {
     
-	List<Map<String, String>> loginData =waitUtils.readDataFromExcel("src/test/resources/testdata/signupdata.xlsx", "signupdata");
+	List<Map<String, String>> loginData =waitUtils.readDataFromExcel("src/test/resources/testData/signupdata.xlsx", "signupdata");
 	Map<String, String> row = loginData.get(0);
     String username = row.get("username");
     String password = row.get("password");

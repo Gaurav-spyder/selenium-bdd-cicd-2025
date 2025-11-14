@@ -42,7 +42,7 @@ public class LoginSteps {
 	 }
 	 @When("User give Login Username and Password")
 	 public void user_give_username_and_password() {
-		 List<Map<String, String>> loginData =waitUtils.readDataFromExcel("src/test/resources/testdata/signupdata.xlsx", "logindata");
+		 List<Map<String, String>> loginData =waitUtils.readDataFromExcel("src/test/resources/testData/signupdata.xlsx", "logindata");
 		 Map<String, String> row = loginData.get(0);
 		    String username = row.get("username");
 		    String password = row.get("password");
