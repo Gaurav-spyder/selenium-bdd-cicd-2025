@@ -1,0 +1,52 @@
+name: Selenium BDD Pipeline
+
+# When to trigger the workflow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Cache Maven local repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
+      - name: Display Java version
+        run: java -version
+
+      # Optional: install system packages (uncomment if you see chrome not found errors)
+      # - name: Install system deps (optional)
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y wget unzip xvfb libxi6 libgconf-2-4 libnss3 libxss1 chromium-browser
+
+      - name: Run Maven tests (headless)
+        run: mvn -B clean test -Dheadless=true
+        env:
+          MAVEN_OPTS: -Xmx2g
+
+      - name: Upload Extent Report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: extent-report
+          path: reports/extent
